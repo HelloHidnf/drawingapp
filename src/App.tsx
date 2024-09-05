@@ -11,27 +11,38 @@ let App = () => {
 
   onMount(() => {
     let ctx = canvas.getContext('2d')!;
-    let ws = new WebSocket('wss://draw-ws.phaz.uk');
 
-    ws.onopen = () => {
-      console.log('Opened');
-      ws.send(JSON.stringify({ type: 'auth', hue }));
-    }
+    let ws: WebSocket;
+    let connect = () => {
+      ws = new WebSocket('wss://draw-ws.phaz.uk');
 
-    ws.onmessage = ( msg ) => {
-      let json = JSON.parse(msg.data);
+      ws.onopen = () => {
+        console.log('Opened');
+        ws.send(JSON.stringify({ type: 'auth', hue }));
+      }
 
-      if(json.type === 'draw'){
-        ctx.lineWidth = 10;
-        ctx.strokeStyle = `hsl(${json.hue}, 100%, 50%)`;
+      ws.onmessage = ( msg ) => {
+        let json = JSON.parse(msg.data);
 
-        ctx.beginPath();
-        ctx.moveTo(json.from[0], json.from[1]);
-        ctx.lineTo(json.to[0], json.to[1]);
-        ctx.stroke();
-        ctx.closePath();
+        if(json.type === 'draw'){
+          ctx.lineWidth = 10;
+          ctx.strokeStyle = `hsl(${json.hue}, 100%, 50%)`;
+
+          ctx.beginPath();
+          ctx.moveTo(json.from[0], json.from[1]);
+          ctx.lineTo(json.to[0], json.to[1]);
+          ctx.stroke();
+          ctx.closePath();
+        }
+      }
+
+      ws.onclose = () => {
+        console.log('Reconnecting');
+        connect();
       }
     }
+
+    connect();
 
     window.onmousedown = () => isMouseDown = true;
     window.onmouseup = () => isMouseDown = false;
