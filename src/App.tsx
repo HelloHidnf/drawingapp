@@ -67,11 +67,13 @@ let App = () => {
     }
 
     let render = () => {
-      ctx.fillStyle = '#0001';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-      
       requestAnimationFrame(render);
     }
+
+    setTimeout(() => {
+      ctx.fillStyle = '#0001';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+    }, 100);
 
     requestAnimationFrame(render);
   })
