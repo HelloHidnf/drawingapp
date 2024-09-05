@@ -36,12 +36,37 @@ let App = () => {
     window.onmousedown = () => isMouseDown = true;
     window.onmouseup = () => isMouseDown = false;
 
+    window.ontouchstart = () => isMouseDown = true;
+    window.ontouchend = () => isMouseDown = false;
+
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
     window.onresize = () => {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
+    }
+
+    window.ontouchmove = ( e ) => {
+      if(isMouseDown){
+        ctx.lineWidth = 10;
+        ctx.strokeStyle = `hsl(${hue}, 100%, 50%)`;
+
+        ws.send(JSON.stringify({
+          type: 'draw',
+          from: [ lastMouseX, lastMouseY ],
+          to: [ e.touches[0].clientX, e.touches[0].clientY ]
+        }));
+
+        ctx.beginPath();
+        ctx.moveTo(lastMouseX, lastMouseY);
+        ctx.lineTo(e.touches[0].clientX, e.touches[0].clientY);
+        ctx.stroke();
+        ctx.closePath();
+      }
+
+      lastMouseX = e.touches[0].clientX;
+      lastMouseY = e.touches[0].clientY;
     }
 
     window.onmousemove = ( e ) => {
