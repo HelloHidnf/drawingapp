@@ -13,8 +13,6 @@ let App = () => {
     let ctx = canvas.getContext('2d')!;
     let ws = new WebSocket('wss://draw-ws.phaz.uk');
 
-    ctx.lineWidth = 10;
-
     ws.onopen = () => {
       console.log('Opened');
       ws.send(JSON.stringify({ type: 'auth', hue }));
@@ -24,6 +22,7 @@ let App = () => {
       let json = JSON.parse(msg.data);
 
       if(json.type === 'draw'){
+        ctx.lineWidth = 10;
         ctx.strokeStyle = `hsl(${json.hue}, 100%, 50%)`;
 
         ctx.beginPath();
@@ -47,6 +46,7 @@ let App = () => {
 
     window.onmousemove = ( e ) => {
       if(isMouseDown){
+        ctx.lineWidth = 10;
         ctx.strokeStyle = `hsl(${hue}, 100%, 50%)`;
 
         ws.send(JSON.stringify({
