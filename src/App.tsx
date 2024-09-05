@@ -13,6 +13,8 @@ let App = () => {
     let ctx = canvas.getContext('2d')!;
     let ws = new WebSocket('wss://draw-ws.phaz.uk');
 
+    ctx.lineWidth = 10;
+
     ws.onopen = () => {
       console.log('Opened');
       ws.send(JSON.stringify({ type: 'auth', hue }));
