@@ -36,7 +36,13 @@ let App = () => {
     window.onmousedown = () => isMouseDown = true;
     window.onmouseup = () => isMouseDown = false;
 
-    window.ontouchstart = () => isMouseDown = true;
+    window.ontouchstart = ( e ) => {
+      lastMouseX = e.touches[0].clientX;
+      lastMouseY = e.touches[0].clientY;
+
+      isMouseDown = true;
+    }
+
     window.ontouchend = () => isMouseDown = false;
 
     canvas.width = window.innerWidth;
