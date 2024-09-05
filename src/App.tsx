@@ -73,7 +73,7 @@ let App = () => {
     setInterval(() => {
       ctx.fillStyle = '#0001';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
-    }, 100);
+    }, 500);
 
     requestAnimationFrame(render);
   })
