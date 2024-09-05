@@ -70,10 +70,10 @@ let App = () => {
       requestAnimationFrame(render);
     }
 
-    setTimeout(() => {
+    setInterval(() => {
       ctx.fillStyle = '#0001';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
-    }, 1000);
+    }, 100);
 
     requestAnimationFrame(render);
   })
